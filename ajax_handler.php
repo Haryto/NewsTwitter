@@ -14,10 +14,6 @@ $countTweets = getenv( 'countTweets' );
 
 switch( $_POST['action'] ) {
 
-	case 'updateSettings':
-		putenv("tweet_username={$_POST['username']}");
-		putenv("countTweets={$_POST['countTweets']}");
-		break;
 	//Case of getting new tweets
 	case 'updateTweets':
 		if ( isset( $_POST['latestId'] ) && is_numeric( $_POST['latestId'] ) ) {
