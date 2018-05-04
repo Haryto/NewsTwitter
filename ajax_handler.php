@@ -1,23 +1,19 @@
 <?php
 
-require 'connection.php';
+require 'config/config.php';
+require 'TwitterConnector.php';
 
 if ( isset( $_POST['latestId'] ) && is_numeric( $_POST['latestId'] ) && $_POST['action'] === 'updateTweets' ) {
 
 	$latestId = $_POST['latestId'];
 
-	try {
-		$last_tweets = $connection->get( 'statuses/user_timeline', array( 'screen_name' => $user_name, 'since_id' => $latestId, 'trim_user' => false ) );
-		if ( !isset( $last_tweets->errors ) ) 	
-			echo wrapTweets( $last_tweets, true );
-		else {
-			logError( print_r( $last_tweets, true ) );
-		}
-	}
-	catch( Abraham\TwitterOAuth\TwitterOAuthException $e ) {
-		logError( 'Выброшено исключение: ' .  $e->getMessage() . "\n" );
-	}
+	$twitter = new TwitterConnector( CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_SECRET );
+
+	$options = array( 'screen_name' => $userName, 'since_id' => $latestId, 'trim_user' => false );
+	$html = $twitter->getMessages( $options, true, true );
+
+	echo $html;
 }
 elseif ( isset( $_POST['timestamp'] ) && is_numeric( $_POST['timestamp'] ) && $_POST['action'] === 'updateDate' ) {
-	echo twitter_time( $_POST['timestamp'], true );
+	echo Helpers::twitter_time( $_POST['timestamp'], true );
 }
