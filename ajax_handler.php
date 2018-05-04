@@ -32,7 +32,7 @@ switch( $_POST['action'] ) {
 		$twitter = new TwitterConnector( getenv( 'CONSUMER_KEY' ), getenv( 'CONSUMER_SECRET' ), getenv( 'OAUTH_TOKEN' ), getenv( 'OAUTH_SECRET' ) );
 
 		$options = array( 'screen_name' => $userName, 'count' => $countTweets, 'trim_user' => false );
-		$html .= $twitter->getMessages( $options, true );
+		$html = $twitter->getMessages( $options, true );
 
 		echo $html;
 		break;
