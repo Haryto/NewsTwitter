@@ -38,7 +38,7 @@ function checkTweets( action = 'updateTweets' ) {
 	} )
 	.done( function( html ) {
 		setTimeout( function() {
-			//checkTweets();
+			checkTweets();
 		}, 2500 );
 		if ( html !== '' ) {
 			$( '.twitter-widget' ).prepend( html );
