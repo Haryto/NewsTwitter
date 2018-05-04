@@ -1,14 +1,33 @@
 var latestTweetId = false;
 var max_twits = 25;
 
+function formSubmit() {
+	//e.preventDefault();
+	var form = $( '#settingsForm' )[0];
+	var username = form.username;
+	var countTweets = form.countTweets;
+	$.ajax( {
+		method: 'POST',
+		url: 'ajax_handler.php',
+		data: { username: username,
+				countTweets: countTweets,
+				action: 'updateSettings' }
+	} )
+	.done( function() {
+		$( '#username' ).textContent = username;
+		$( '#countTweets' ).textContent = countTweets;
+	} );
+	return false;
+}
+
 function updateDates() {
     var tweetDates = $( '.tweetdate' );
     $.each( tweetDates, function( index, value ) {
 		var timestamp = value.dataset.date;
-		if (index > max_twits-1) {
-			$(value).addClass( 'old' );
+		if ( index > max_twits - 1 ) {
+			$( value ).addClass( 'old' );
 			setTimeout( function() {
-				$(value).parent().remove();
+				$( value ).parent().remove();
 			}, 500);
 		}
 		else {
@@ -25,7 +44,7 @@ function updateDates() {
 	} );
 }
 
-function checkTweets() {
+function checkTweets( action = 'updateTweets' ) {
     var latestTweet = $( '.twitter-bubble' )[0];
     if ( latestTweet ) {
         latestTweetId = latestTweet.dataset.tweetId;
@@ -34,11 +53,11 @@ function checkTweets() {
 		method: 'POST',
 		url: 'ajax_handler.php',
 		data: { latestId: latestTweetId,
-				action: 'updateTweets' }  
+				action: action }  
 	} )
 	.done( function( html ) {
 		setTimeout( function() {
-			checkTweets();
+			//checkTweets();
 		}, 2500 );
 		if ( html !== '' ) {
 			$( '.twitter-widget' ).prepend( html );
@@ -49,9 +68,9 @@ function checkTweets() {
 	} );
 }
 
-setTimeout( function() {
-	checkTweets();
-}, 1000);
+window.onload = function() {
+	checkTweets( 'loadTweets' );
+}
 
 setInterval( function() {
 	updateDates();

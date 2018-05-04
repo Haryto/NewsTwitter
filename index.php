@@ -5,19 +5,16 @@
 
 <body>
 
-<?php
+	<form id="settingsForm" method="POST" onsubmit="formSubmit();">
+		<input type="text" name="username" />
+		<input type="text" name="countTweets" />
+		<input type="submit" name="submit" />
+	</form>
 
-require 'config/config.php';
-require 'TwitterConnector.php';
+	<div class="twitter-widget">
 
-$twitter = new TwitterConnector( CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_SECRET );
+	</div>
 
-$options = array( 'screen_name' => $userName, 'count' => $countTwits, 'trim_user' => false );
-$html = $twitter->getMessages( $options, true );
-
-echo $html;
-
-?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="js/scripts.js"></script>
 

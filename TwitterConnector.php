@@ -1,8 +1,8 @@
 <?php
 
-require 'vendor/autoload.php';
-require 'Connector.php';
-require 'Helpers.php';
+require_once 'vendor/autoload.php';
+require_once 'Connector.php';
+require_once 'Helpers.php';
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 
@@ -12,12 +12,25 @@ class TwitterConnector extends Connector {
 
     private $verified;
 
+    /**
+     * Connect to Twitter API
+     *
+     * @param array $keys Credentials for OAuth
+     * @return TwitterOAuth
+     */
     protected function connect( $keys ) {
 
         $connection = new TwitterOAuth( $keys['consumerKey'], $keys['consumerSecret'], $keys['OAuthToken'], $keys['OAuthSecret'] );
         return $connection;
     }
 
+    /**
+     * Send request to Twitter API
+     *
+     * @param string $url Request url
+     * @param array $options Request's options array
+     * @return stdObject|string
+     */
     protected function sendRequest( $url, $options = array() ) {
         $response = '';
         try {
@@ -29,6 +42,11 @@ class TwitterConnector extends Connector {
         return $response;
     }
 
+    /**
+     * Verifying account to check permissions
+     *
+     * @return bool
+     */
     protected function verify() {
         if ( !isset( $this->verified ) ) {
             $this->verified = $this->sendRequest( 'account/verify_credentials' );
@@ -42,14 +60,27 @@ class TwitterConnector extends Connector {
         return $this->verified;
     }
 
-    protected function getHtml( $response, $update ) {
+    /**
+     * Wrapping API request into HTML
+     *
+     * @param stdObject $messages Messages to wrap
+     * @param boolean $update Is it tweets' update or start tweets
+     * @return string
+     */
+    protected function getHtml( $messages, $update ) {
         $html = '';
-        $html .= '<div class="twitter-widget">';
-        $html .= Helpers::wrapTweets( $response, $update );
-        $html .= '</div>';
+        $html .= Helpers::wrapTweets( $messages, $update );
         return $html;
     }
 
+    /**
+     * Get tweets from user, wrapped in HTML or not
+     *
+     * @param array $options Request's options array
+     * @param boolean $html Is there HTML in return or stdObject
+     * @param boolean $update Is it tweets' update or start tweets
+     * @return string|strObject
+     */
     public function getMessages( $options = array(), $html = false, $update = false ) {
         $response = '';
         if ( $this->verify() ) {
@@ -64,6 +95,14 @@ class TwitterConnector extends Connector {
         return $response;
     }
 
+    /**
+     * Class constructor, connects to Twitter API using credentials from params
+     *
+     * @param string $consumerKey
+     * @param string $consumerSecret
+     * @param string $OAuthToken
+     * @param string $OAuthSecret
+     */
     function __construct( $consumerKey, $consumerSecret, $OAuthToken, $OAuthSecret ) {
         $this->connection = $this->connect(
              array( 'consumerKey' => $consumerKey,

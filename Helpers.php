@@ -2,6 +2,13 @@
 
 class Helpers {
 
+    /**
+     * Wrap tweets in HTML
+     *
+     * @param stdObject $last_tweets Tweets to wrap
+     * @param boolean $isNew Is it new tweet or start one
+     * @return string
+     */
     public static function wrapTweets( $last_tweets, $isNew = false ) {
         $html = '';
         foreach( $last_tweets as $tweet ) {
@@ -26,7 +33,13 @@ class Helpers {
     return preg_replace( '@(https?://([-\w\.]+[-\w])+(:\d+)?(/([\w/_\.#-]*(\?\S+)?[^\.\s])?)?)@', '<a target="blank" rel="nofollow" href="$1" target="_blank">$1</a>', $s );
     }
 
-
+    /**
+     * Represents time in how it twitter does
+     *
+     * @param string $a Tweet's publish time
+     * @param boolean $update Is it update of old date or date of new tweet
+     * @return string
+     */
     public static function twitter_time( $a, $update = false ) {
         //get current timestampt
         $b = strtotime( "now", time() + 20 ); 
@@ -37,7 +50,6 @@ class Helpers {
             $c = $a;
         //get difference
         $d = $b - $c;
-        //file_put_contents( 'date_log.txt', 'update = ' . print_r($update, true) . ' d = ' . print_r($d, true) . ' b = ' . print_r($b, true) .' c = ' . print_r($c, true) . "\n", FILE_APPEND );
         //calculate different time values
         $minute = 60;
         $hour = $minute * 60;
@@ -74,7 +86,12 @@ class Helpers {
         }
     }
 
-
+    /**
+     * Write error in log file
+     *
+     * @param string $message
+     * @return void
+     */
     public static function logError( $message ) {
         file_put_contents( 'log_error.txt', date('H:i:s  -  ') . $message, FILE_APPEND);
     }
