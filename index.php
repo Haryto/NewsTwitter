@@ -5,12 +5,6 @@
 
 <body>
 
-	<form id="settingsForm" method="POST" onsubmit="formSubmit();">
-		<input type="text" name="username" />
-		<input type="text" name="countTweets" />
-		<input type="submit" name="submit" />
-	</form>
-
 	<div class="twitter-widget">
 
 	</div>
