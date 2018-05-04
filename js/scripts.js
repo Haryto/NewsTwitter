@@ -1,25 +1,6 @@
 var latestTweetId = false;
 var max_twits = 25;
 
-function formSubmit() {
-	//e.preventDefault();
-	var form = $( '#settingsForm' )[0];
-	var username = form.username;
-	var countTweets = form.countTweets;
-	$.ajax( {
-		method: 'POST',
-		url: 'ajax_handler.php',
-		data: { username: username,
-				countTweets: countTweets,
-				action: 'updateSettings' }
-	} )
-	.done( function() {
-		$( '#username' ).textContent = username;
-		$( '#countTweets' ).textContent = countTweets;
-	} );
-	return false;
-}
-
 function updateDates() {
     var tweetDates = $( '.tweetdate' );
     $.each( tweetDates, function( index, value ) {
